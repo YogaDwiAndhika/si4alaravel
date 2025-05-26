@@ -14,7 +14,8 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
-        //
+        $mahasiswa = Mahasiswa::all();
+        return view('mahasiswa.index')->with('mahasiswa', $mahasiswa);
     }
 
     /**
@@ -24,7 +25,8 @@ class MahasiswaController extends Controller
      */
     public function create()
     {
-        //
+        $mahasiswa = Mahasiswa::all();
+        return view('mahasiswa.create')->with('mahasiswa', $mahasiswa);
     }
 
     /**
@@ -35,7 +37,21 @@ class MahasiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'npm' => 'required',
+            'nama' => 'required',
+            'jk' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required|date',
+            'asal_sma' => 'required',
+            'foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'prodi_id' => 'required',
+        ]);
+
+        Mahasiswa::create($request->all());
+
+        return redirect()->route('mahasiswa.index')
+            ->with('success', 'Mahasiswa created successfully.');
     }
 
     /**

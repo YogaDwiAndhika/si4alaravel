@@ -24,8 +24,13 @@ Route::get('/profil', function(){
     return view('profil');
 });
 
-Route::resource('/fakultas', FakultasController::class);
+// Route::resource('/fakultas', FakultasController::class);
 Route::resource('/prodi', ProdiController::class);
+Route::resource('/fakultas', FakultasController::class);
 Route::resource('/mahasiswa', MahasiswaController::class);
+
 Route::get('/', function () {return view('layout.main');});
+// Route::get('/prodi', [ProdiController::class, 'index'])->name('prodi');
+// Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa');
+// Route::get('/fakultas/create', [FakultasController::class, 'create'])->name('fakultas.create');
 // test
