@@ -71,9 +71,14 @@ class ProdiController extends Controller
      * @param  \App\Models\Prodi  $prodi
      * @return \Illuminate\Http\Response
      */
-    public function edit(Prodi $prodi)
+    public function edit($prodi)
     {
-        //
+        // ambil data prodi berdasarkan id
+        $prodi = Prodi::findOrFail($prodi);
+        // ambil data fakultas untuk dropdown
+        $fakultas = Fakultas::all();
+        // tampilkan form edit
+        return view('prodi.edit', compact('prodi', 'fakultas'));
     }
 
     /**
@@ -83,9 +88,21 @@ class ProdiController extends Controller
      * @param  \App\Models\Prodi  $prodi
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Prodi $prodi)
+    public function update(Request $request, $prodi)
     {
-        //
+        $prodi = Prodi::findOrFail($prodi);
+        //validasi data
+        $input = $request->validate([
+            'nama' => 'required',
+            'singkatan' => 'required|max:5',
+            'kaprodi' => 'required',
+            'sekprodi' => 'required',
+            'fakultas_id' => 'required',
+        ]);
+        //update data ke database
+        $prodi->update($input);
+        //redirect ke halaman prodi
+        return redirect()->route('prodi.index')->with('success', 'Data Prodi Berhasil Diupdate');
     }
 
     /**
@@ -94,8 +111,12 @@ class ProdiController extends Controller
      * @param  \App\Models\Prodi  $prodi
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Prodi $prodi)
+    public function destroy($prodi)
     {
-        //
+        $prodi = Prodi::findOrFail($prodi);
+        //hapus data prodi
+        $prodi->delete();
+        //redirect ke halaman prodi
+        return redirect()->route('prodi.index')->with('success', 'Data Prodi Berhasil Dihapus');
     }
 }

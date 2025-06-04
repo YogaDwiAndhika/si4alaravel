@@ -42,7 +42,7 @@
                                             <form action="{{ route('fakultas.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus?')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-danger btn-sm" type="submit">Hapus</button>
+                                                <button type="submit" class="btn btn-danger show_confirm" data-toggle="tooltip" title='delete' data-nama='{{ $item->nama }}'>Hapus</button>
                                             </form>
                                         </td>
                                     </tr>

@@ -60,9 +60,9 @@
                       <div class="mb-3">
                         <label for="foto" class="form-label">Foto</label>
                         <input type="file" class="form-control" name="foto">
-                        @error('foto')
+                        <!-- @error('foto')
                             <div class="text-danger">{{ $message }}</div>
-                        @enderror
+                        @enderror -->
                       </div>
                     </div>
                     <!--end::Body-->

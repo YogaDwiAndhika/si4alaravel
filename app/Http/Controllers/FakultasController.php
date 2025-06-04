@@ -59,9 +59,11 @@ class FakultasController extends Controller
      * @param  \App\Models\Fakultas  $fakultas
      * @return \Illuminate\Http\Response
      */
-    public function show(Fakultas $fakultas)
+    public function show( $fakultas)
     {
-        //
+        $fakultas = Fakultas::findOrFail($fakultas);
+        //dd($fakultas);
+        return view('fakultas.show', compact('fakultas'));
     }
 
     /**
@@ -70,9 +72,12 @@ class FakultasController extends Controller
      * @param  \App\Models\Fakultas  $fakultas
      * @return \Illuminate\Http\Response
      */
-    public function edit(Fakultas $fakultas)
+    public function edit($fakultas)
     {
-        //
+        // ambil data fakultas berdasarkan id
+        $fakultas = Fakultas::findOrFail($fakultas);
+        // dd($fakultas);
+        return view('fakultas.edit', compact('fakultas'));
     }
 
     /**
@@ -82,9 +87,20 @@ class FakultasController extends Controller
      * @param  \App\Models\Fakultas  $fakultas
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Fakultas $fakultas)
+    public function update(Request $request,$fakultas)
     {
-        //
+        $fakultas = fakultas::findOrFail($fakultas);
+        //validasi data
+        $input = $request->validate([
+            'nama' => 'required',
+            'singkatan' => 'required|max:5',
+            'dekan' => 'required',
+            'wakil_dekan' => 'required',
+        ]);
+        //update data ke database
+        $fakultas->update($input);
+        //redirect ke halaman fakultas
+        return redirect()->route('fakultas.index')->with('success', 'Data Fakultas Berhasil Diupdate');
     }
 
     /**
@@ -93,8 +109,10 @@ class FakultasController extends Controller
      * @param  \App\Models\Fakultas  $fakultas
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Fakultas $fakultas)
+    public function destroy($fakultas)
     {
-        //
+        $fakultas = Fakultas::findOrFail($fakultas);
+        $fakultas->delete();
+        return redirect()->route('fakultas.index')->with('success', 'Data Fakultas Berhasil Dihapus');
     }
 }
