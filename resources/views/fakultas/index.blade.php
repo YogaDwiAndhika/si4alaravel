@@ -14,7 +14,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title mb-0">Daftar Fakultas</h3>
-                    <a href="{{ route('fakultas.create') }}" class="btn btn-primary btn-sm">Tambah Fakultas</a>
+                    @can('create', App\Models\Fakultas::class)
+                        <a href="{{ route('fakultas.create') }}" class="btn btn-primary btn-sm">Tambah Fakultas</a>
+                    @endcan
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -38,12 +40,16 @@
                                         <td>{{ $item->dekan }}</td>
                                         <td>{{ $item->wakil_dekan }}</td>
                                         <td>
-                                            <a href="{{ route('fakultas.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                            <form action="{{ route('fakultas.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger show_confirm" data-toggle="tooltip" title='delete' data-nama='{{ $item->nama }}'>Hapus</button>
-                                            </form>
+                                            @can('update', $item)
+                                                <a href="{{ route('fakultas.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                            @endcan
+                                            @can('delete', $item)
+                                                <form action="{{ route('fakultas.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger show_confirm" data-toggle="tooltip" title='delete' data-nama='{{ $item->nama }}'>Hapus</button>
+                                                </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @empty

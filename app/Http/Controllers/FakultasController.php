@@ -40,6 +40,11 @@ class FakultasController extends Controller
      */
     public function store(Request $request)
     {
+        // cek apakah user memiliki hak akses untuk membuat fakultas
+        if ($request->user()->cannot('create', Fakultas::class)) {
+            abort(403);
+        }
+
         //validasi data
         $input = $request->validate([
             'nama' => 'required|unique:fakultas',
@@ -89,7 +94,14 @@ class FakultasController extends Controller
      */
     public function update(Request $request,$fakultas)
     {
+        
         $fakultas = fakultas::findOrFail($fakultas);
+        
+        // cek apakah user memiliki hak akses untuk mengupdate fakultas
+        if ($request->user()->cannot('update', $fakultas)) {
+            abort(403);
+        }
+
         //validasi data
         $input = $request->validate([
             'nama' => 'required',
@@ -109,9 +121,16 @@ class FakultasController extends Controller
      * @param  \App\Models\Fakultas  $fakultas
      * @return \Illuminate\Http\Response
      */
-    public function destroy($fakultas)
+    public function destroy(Request $request, $fakultas)
     {
         $fakultas = Fakultas::findOrFail($fakultas);
+
+        // cek apakah user memiliki hak akses untuk menghapus fakultas
+        if ($request->user()->cannot('delete', $fakultas)) {
+            abort(403);
+        }
+        
+        // hapus data fakultas
         $fakultas->delete();
         return redirect()->route('fakultas.index')->with('success', 'Data Fakultas Berhasil Dihapus');
     }
